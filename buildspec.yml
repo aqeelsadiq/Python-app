@@ -17,11 +17,11 @@ phases:
       - docker tag $REPOSITORY_URI:$IMAGE_TAG $REPOSITORY_URI:$IMAGE_TAG
 
   post_build:
-    commands:
+    commands:docker push $REPOSITORY_URI:$IMAGE_TAGdocker push $REPOSITORY_URI:$IMAGE_TAGdocker push $REPOSITORY_URI:$IMAGE_TAG
       - echo Build completed on `date`
       - echo Pushing the Docker images.
       - docker push $REPOSITORY_URI:$IMAGE_TAG
 
 
-
-
+artifacts:
+   path: '**/*'
