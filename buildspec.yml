@@ -6,7 +6,7 @@ phases:
       - echo log in to aws ecr 
       - aws --version
       - aws ecr get-login-password --region us-west-1 | docker login --username AWS --password-stdin 944347495097.dkr.ecr.us-west-1.amazonaws.com
-      - REPOSITORY_URI=944347495097.dkr.ecr.us-west-1.amazonaws.com/python-demo-ecr
+      - REPOSITORY_URI=944347495097.dkr.ecr.us-west-1.amazonaws.com/my-pythton-ecr
       - IMAGE_TAG=latest
 
   build:
