@@ -23,5 +23,5 @@ phases:
       - docker push $REPOSITORY_URI:$IMAGE_TAG
 
 
-artifacts:
-   path: '**/*'
+# artifacts:
+#    path: '**/*'
