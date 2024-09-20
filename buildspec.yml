@@ -3,25 +3,21 @@ version: 0.2
 phases:
   pre_build:
     commands:
-      - echo log in to aws ecr 
-      - aws --version
+      - echo Logging in to Amazon ECR...
       - aws ecr get-login-password --region us-west-1 | docker login --username AWS --password-stdin 944347495097.dkr.ecr.us-west-1.amazonaws.com
-      - REPOSITORY_URI=944347495097.dkr.ecr.us-west-1.amazonaws.com/my-pythton-ecr
-      - IMAGE_TAG=latest
-
+      - REPOSITORY_URI=944347495097.dkr.ecr.us-west-1.amazonaws.com/my-pythonapp-ecr
+      - IMAGE_TAG=$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | cut -c 1-7)
   build:
     commands:
-      - echo Building started on 'date'
-      - echo Building the docekr image
+      - echo Build started on `date`
+      - echo Building the Docker image...
       - docker build -t $REPOSITORY_URI:$IMAGE_TAG .
-      - docker tag $REPOSITORY_URI:$IMAGE_TAG $REPOSITORY_URI:$IMAGE_TAG
-
   post_build:
-    commands:docker push $REPOSITORY_URI:$IMAGE_TAGdocker push $REPOSITORY_URI:$IMAGE_TAGdocker push $REPOSITORY_URI:$IMAGE_TAG
+    commands:
       - echo Build completed on `date`
-      - echo Pushing the Docker images.
+      - echo Pushing the Docker image to ECR...
       - docker push $REPOSITORY_URI:$IMAGE_TAG
-
-
-# artifacts:
-#    path: '**/*'
+      - echo Writing image definitions file...
+      - printf '[{"name":"CONTAINER_NAME","imageUri":"%s"}]' $REPOSITORY_URI:$IMAGE_TAG > imagedefinitions.json
+artifacts:
+  files: imagedefinitions.json
